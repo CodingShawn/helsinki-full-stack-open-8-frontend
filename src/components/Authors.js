@@ -21,6 +21,7 @@ const Authors = (props) => {
   if (!props.show) {
     return null;
   }
+
   const authors = props.authors;
 
   return (
@@ -46,13 +47,14 @@ const Authors = (props) => {
       <form onSubmit={submit}>
         <h2>Set Birth Year</h2>
         <div>
-          {" "}
-          Name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-            type="text"
-          />
+          <select value={name} onChange={({ target }) => setName(target.value)}>
+            <option>Choose an author</option>
+            {authors.map((author) => (
+              <option key={author.name} value={author.name}>
+                {author.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           {" "}

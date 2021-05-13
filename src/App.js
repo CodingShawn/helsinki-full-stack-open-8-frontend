@@ -3,7 +3,7 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/Login";
-import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
+import { ALL_AUTHORS, ALL_BOOKS, CURRENT_USER } from "./queries";
 import { useApolloClient, useQuery } from "@apollo/client";
 
 const App = () => {
@@ -13,6 +13,7 @@ const App = () => {
 
   const authorResults = useQuery(ALL_AUTHORS);
   const bookResults = useQuery(ALL_BOOKS);
+  const currentUser= useQuery(CURRENT_USER);
 
   useEffect(() => setToken(localStorage.getItem("user-token")), []);
 
@@ -55,6 +56,7 @@ const App = () => {
         <button onClick={() => setPage("authors")}>authors</button>
         <button onClick={() => setPage("books")}>books</button>
         <button onClick={() => setPage("add")}>add book</button>
+        <button onClick={() => setPage("recommended")}>Recommendations</button>
         <button onClick={logout}>Log out</button>
       </div>
 
@@ -63,8 +65,13 @@ const App = () => {
         show={page === "authors"}
         isLogin={true}
       />
-
-      <Books books={bookResults.data.allBooks} show={page === "books"} />
+      
+      <Books
+        books={bookResults.data.allBooks}
+        show={page === "books" || page ==="recommended"}
+        page={page}
+        currentUserFavouriteGenre={currentUser.data.me.favouriteGenre}
+      />
 
       <NewBook show={page === "add"} />
     </div>

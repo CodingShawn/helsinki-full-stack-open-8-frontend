@@ -39,6 +39,7 @@ const App = () => {
         <Authors
           authors={authorResults.data.allAuthors}
           show={page === "authors"}
+          isLogin={false}
         />
 
         <Books books={bookResults.data.allBooks} show={page === "books"} />
@@ -60,6 +61,7 @@ const App = () => {
       <Authors
         authors={authorResults.data.allAuthors}
         show={page === "authors"}
+        isLogin={true}
       />
 
       <Books books={bookResults.data.allBooks} show={page === "books"} />

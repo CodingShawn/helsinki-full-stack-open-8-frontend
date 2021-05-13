@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
@@ -13,6 +13,8 @@ const App = () => {
 
   const authorResults = useQuery(ALL_AUTHORS);
   const bookResults = useQuery(ALL_BOOKS);
+
+  useEffect(() => setToken(localStorage.getItem("user-token")), []);
 
   function logout() {
     setToken(null);

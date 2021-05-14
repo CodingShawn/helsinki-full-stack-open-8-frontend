@@ -1,6 +1,6 @@
-import { useLazyQuery, useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import React, { useState, useEffect } from "react";
-import { ALL_BOOKS, CURRENT_USER } from "../queries";
+import { ALL_BOOKS } from "../queries";
 
 const Books = (props) => {
   const [selectedFilter, setSelectedFilter] = useState("");
@@ -10,6 +10,7 @@ const Books = (props) => {
 
   useEffect(() => {
     getBooks({ variables: { genre: selectedFilter } });
+    // eslint-disable-next-line
   }, [selectedFilter]);
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const Books = (props) => {
     } else {
       setSelectedFilter("");
     }
+    // eslint-disable-next-line
   }, [props.page]);
 
   if (!props.show) {

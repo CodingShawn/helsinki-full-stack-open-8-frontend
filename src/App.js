@@ -3,8 +3,8 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/Login";
-import { ALL_AUTHORS, ALL_BOOKS, CURRENT_USER } from "./queries";
-import { useApolloClient, useQuery } from "@apollo/client";
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED, CURRENT_USER } from "./queries";
+import { useApolloClient, useQuery, useSubscription } from "@apollo/client";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -16,6 +16,12 @@ const App = () => {
   const currentUser = useQuery(CURRENT_USER);
 
   useEffect(() => setToken(localStorage.getItem("user-token")), []);
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(`${subscriptionData.data.bookAdded.title} was added`);
+    },
+  });
 
   function logout() {
     setToken(null);

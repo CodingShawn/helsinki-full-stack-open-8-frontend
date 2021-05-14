@@ -1,9 +1,22 @@
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import React, { useState, useEffect } from "react";
-import { CURRENT_USER } from "../queries";
+import { ALL_BOOKS, CURRENT_USER } from "../queries";
 
 const Books = (props) => {
   const [selectedFilter, setSelectedFilter] = useState("");
+  const [filteredBooks, setFilteredBooks] = useState([]);
+
+  const [getBooks, results] = useLazyQuery(ALL_BOOKS);
+
+  useEffect(() => {
+    getBooks({ variables: { genre: selectedFilter } });
+  }, [selectedFilter]);
+
+  useEffect(() => {
+    if (results.data) {
+      setFilteredBooks(results.data.allBooks);
+    }
+  }, [results]);
 
   useEffect(() => {
     if (props.page === "recommended") {
@@ -25,14 +38,6 @@ const Books = (props) => {
     book.genres.map((genre) => (genres = genres.concat(genre)))
   );
   let uniqueGenres = [...new Set(genres)];
-
-  let filteredBooks = books.filter((book) =>
-    book.genres.find((genre) => genre === selectedFilter)
-  );
-
-  if (!selectedFilter) {
-    filteredBooks = books;
-  }
 
   if (props.page === "recommended") {
     return (

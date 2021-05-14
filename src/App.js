@@ -13,7 +13,7 @@ const App = () => {
 
   const authorResults = useQuery(ALL_AUTHORS);
   const bookResults = useQuery(ALL_BOOKS);
-  const currentUser= useQuery(CURRENT_USER);
+  const currentUser = useQuery(CURRENT_USER);
 
   useEffect(() => setToken(localStorage.getItem("user-token")), []);
 
@@ -24,7 +24,7 @@ const App = () => {
     setPage("login");
   }
 
-  if (authorResults.loading || bookResults.loading) {
+  if (authorResults.loading || bookResults.loading || currentUser.loading) {
     return <div>loading</div>;
   }
 
@@ -65,10 +65,10 @@ const App = () => {
         show={page === "authors"}
         isLogin={true}
       />
-      
+
       <Books
         books={bookResults.data.allBooks}
-        show={page === "books" || page ==="recommended"}
+        show={page === "books" || page === "recommended"}
         page={page}
         currentUserFavouriteGenre={currentUser.data.me.favouriteGenre}
       />

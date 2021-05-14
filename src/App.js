@@ -17,9 +17,24 @@ const App = () => {
 
   useEffect(() => setToken(localStorage.getItem("user-token")), []);
 
+  function updateCacheWith(addedBook) {
+    function includedIn(set, object) {
+      return set.map((book) => book.id).includes(object.id);
+    }
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS });
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) },
+      });
+    }
+  }
+
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
       window.alert(`${subscriptionData.data.bookAdded.title} was added`);
+      updateCacheWith(subscriptionData.data.bookAdded);
     },
   });
 
@@ -79,7 +94,7 @@ const App = () => {
         currentUserFavouriteGenre={currentUser.data.me.favouriteGenre}
       />
 
-      <NewBook show={page === "add"} />
+      <NewBook show={page === "add"} updateCacheWith={updateCacheWith} />
     </div>
   );
 };

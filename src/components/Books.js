@@ -16,7 +16,6 @@ const Books = (props) => {
   useEffect(() => {
     if (results.data) {
       setFilteredBooks(results.data.allBooks);
-      console.log(results.data.allBooks);
     }
   }, [results]);
 
